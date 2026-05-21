@@ -1,23 +1,33 @@
-cmake_minimum_required(VERSION 3.20)
-project(UNO C)
+cmake_minimum_required(VERSION 3.25)
+project(UNO_FOCHE C)
 
-set(CMAKE_C_STANDARD 99)
+# Imposta lo standard del C
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# CREA IL PROGRAMMA (DEVE ESSERE PRIMA)
-add_executable(UNO
+# Elenco di tutti i moduli .c del gioco
+set(SOURCES
         main.c
-        game.h
         game.c
         audio.c
-        graphics.h
         graphics.c
-        audio.h
+        main.c
+        "../UNO 1vs1 5.0/main.c"
 )
 
-# LINK RAYLIB (DOPO add_executable)
-find_package(raylib REQUIRED)
-target_link_libraries(UNO raylib)
+# Definizione dell'eseguibile (chiamato uno_game come quello in cartella)
+add_executable(uno_game ${SOURCES})
 
-# COPIA ASSET
-file(COPY carte DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY assets_musica.mp3 DESTINATION ${CMAKE_BINARY_DIR})
+# =====================================================================
+# NOTA SULLE LIBRERIE ESTERNE
+# Visto che hai moduli per audio e grafica, probabilmente usi una libreria
+# come Raylib o SDL2. Scommenta le righe relative alla libreria che usi:
+# =====================================================================
+
+# --- Se usi RAYLIB, scommenta queste due righe: ---
+ find_package(raylib REQUIRED)
+ target_link_libraries(uno_game PRIVATE raylib)
+
+# --- Se usi SDL2, scommenta queste due righe (adatta se usi anche SDL2_image/mixer): ---
+# find_package(SDL2 REQUIRED)
+# target_link_libraries(uno_game PRIVATE SDL2::SDL2)
