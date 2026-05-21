@@ -1,0 +1,1 @@
+/usr/bin/cc -g -Wl,--dependency-file=CMakeFiles/uno_game.dir/link.d CMakeFiles/uno_game.dir/main.c.o CMakeFiles/uno_game.dir/game.c.o CMakeFiles/uno_game.dir/audio.c.o CMakeFiles/uno_game.dir/graphics.c.o "CMakeFiles/uno_game.dir/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/UNO_1vs1_5.0/main.c.o" -o uno_game  /usr/lib64/libraylib.so -L/usr/lib64 -lraylib

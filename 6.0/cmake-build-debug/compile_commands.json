@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug",
+  "command": "/usr/bin/cc   -g -std=gnu11 -fdiagnostics-color=always -I/usr/include -o CMakeFiles/uno_game.dir/main.c.o -c /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/main.c",
+  "file": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/main.c",
+  "output": "CMakeFiles/uno_game.dir/main.c.o"
+},
+{
+  "directory": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug",
+  "command": "/usr/bin/cc   -g -std=gnu11 -fdiagnostics-color=always -I/usr/include -o CMakeFiles/uno_game.dir/game.c.o -c /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/game.c",
+  "file": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/game.c",
+  "output": "CMakeFiles/uno_game.dir/game.c.o"
+},
+{
+  "directory": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug",
+  "command": "/usr/bin/cc   -g -std=gnu11 -fdiagnostics-color=always -I/usr/include -o CMakeFiles/uno_game.dir/audio.c.o -c /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/audio.c",
+  "file": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/audio.c",
+  "output": "CMakeFiles/uno_game.dir/audio.c.o"
+},
+{
+  "directory": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug",
+  "command": "/usr/bin/cc   -g -std=gnu11 -fdiagnostics-color=always -I/usr/include -o CMakeFiles/uno_game.dir/graphics.c.o -c /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/graphics.c",
+  "file": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/graphics.c",
+  "output": "CMakeFiles/uno_game.dir/graphics.c.o"
+},
+{
+  "directory": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug",
+  "command": "/usr/bin/cc   -g -std=gnu11 -fdiagnostics-color=always -I/usr/include -o CMakeFiles/uno_game.dir/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/UNO_1vs1_5.0/main.c.o -c \"/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/UNO 1vs1 5.0/main.c\"",
+  "file": "/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/UNO 1vs1 5.0/main.c",
+  "output": "CMakeFiles/uno_game.dir/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/UNO_1vs1_5.0/main.c.o"
+}
+]
