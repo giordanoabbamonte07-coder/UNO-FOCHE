@@ -1,3 +1,0 @@
-/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug/CMakeFiles/uno_game.dir
-/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug/CMakeFiles/rebuild_cache.dir

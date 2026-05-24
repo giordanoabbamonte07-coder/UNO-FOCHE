@@ -1,4 +1,0 @@
-/var/lib/snapd/snap/clion/439/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0 -B /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/giordanoabbamonte/CLionProjects/UNO-FOCHE/6.0/cmake-build-debug
