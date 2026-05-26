@@ -307,46 +307,70 @@ void InizializzaMenu(MenuGrafica *mg) {
 
 StatoGioco AggiornaDisegnaMenu(MenuGrafica *mg) {
     Vector2 mouse = GetMousePosition();
-    const float largh = 490.0f;
-    const float gap = -82.0f;
-    const float cX = 600.0f;
-    const float cY = 455.0f;
 
-    float h2 = (float)mg->btn_registrati.height * (largh / (float)mg->btn_registrati.width);
-    Rectangle rReg = { cX - (largh / 2.0f), cY - (h2 / 2.0f), largh, h2 };
+    // Posizioni verticali (Y) e orizzontali (X) reali dei tuoi tasti sullo schermo
+    const float cX = 600.0f; // Il centro dello schermo
 
-    float h1 = (float)mg->btn_accedi.height * (largh / (float)mg->btn_accedi.width);
-    Rectangle rAcc = { cX - (largh / 2.0f), rReg.y - h1 - gap, largh, h1 };
+    // Altezze visive originali per il disegno
+    const float largh_visuale = 490.0f;
+    const float h2 = (float)mg->btn_registrati.height * (largh_visuale / (float)mg->btn_registrati.width);
+    const float h1 = (float)mg->btn_accedi.height * (largh_visuale / (float)mg->btn_accedi.width);
+    const float h3 = (float)mg->btn_ospite.height * (largh_visuale / (float)mg->btn_ospite.width);
 
-    float h3 = (float)mg->btn_ospite.height * (largh / (float)mg->btn_ospite.width);
-    Rectangle rOsp = { cX - (largh / 2.0f), rReg.y + h2 + gap, largh, h3 };
+    float yReg = 455.0f - (h2 / 2.0f);
+    float yAcc = yReg - h1 - (-82.0f);
+    float yOsp = yReg + h2 + (-82.0f);
 
+    // Rettangoli usati per disegnare i bottoni (lasciali stare così la grafica resta perfetta)
+    Rectangle rAccDraw = { cX - (largh_visuale / 2.0f), yAcc, largh_visuale, h1 };
+    Rectangle rRegDraw = { cX - (largh_visuale / 2.0f), yReg, largh_visuale, h2 };
+    Rectangle rOspDraw = { cX - (largh_visuale / 2.0f), yOsp, largh_visuale, h3 };
+
+    // =========================================================================
+    // REGOLA SOLO QUESTI NUMERI (Misure in Pixel della Hitbox Cliccabile)
+    // =========================================================================
+    float hitbox_W = 430.0f; // Prima era 260.0f (la allunghiamo un po' ai lati)
+    float hitbox_H = 120.0f;  // Prima era 45.0f  (la facciamo un po' più alta)
+    // =========================================================================
+    // Rettangoli delle hitbox centrati a mano in modo semplicissimo
+    Rectangle rAccHitbox = { cX - (hitbox_W / 2.0f), yAcc + (h1 - hitbox_H) / 2.0f, hitbox_W, hitbox_H };
+    Rectangle rRegHitbox = { cX - (hitbox_W / 2.0f), yReg + (h2 - hitbox_H) / 2.0f, hitbox_W, hitbox_H };
+    Rectangle rOspHitbox = { cX - (hitbox_W / 2.0f), yOsp + (h3 - hitbox_H) / 2.0f, hitbox_W, hitbox_H };
+
+    // --- DISEGNO SFONDO ---
     if (mg->sfondo.id > 0) {
         DrawTexturePro(mg->sfondo, (Rectangle) { 0, 0, (float)mg->sfondo.width, (float)mg->sfondo.height }, (Rectangle) { 0, 0, 1200, 800 }, (Vector2) { 0, 0 }, 0, WHITE);
     }
 
+    // --- DISEGNO PULSANTI ---
     if (mg->btn_accedi.id > 0) {
-        DrawTexturePro(mg->btn_accedi, (Rectangle) { 0, 0, (float)mg->btn_accedi.width, (float)mg->btn_accedi.height }, rAcc, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rAcc) ? LIGHTGRAY : WHITE);
+        DrawTexturePro(mg->btn_accedi, (Rectangle) { 0, 0, (float)mg->btn_accedi.width, (float)mg->btn_accedi.height }, rAccDraw, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rAccHitbox) ? LIGHTGRAY : WHITE);
     }
 
     if (mg->btn_registrati.id > 0) {
-        DrawTexturePro(mg->btn_registrati, (Rectangle) { 0, 0, (float)mg->btn_registrati.width, (float)mg->btn_registrati.height }, rReg, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rReg) ? LIGHTGRAY : WHITE);
+        DrawTexturePro(mg->btn_registrati, (Rectangle) { 0, 0, (float)mg->btn_registrati.width, (float)mg->btn_registrati.height }, rRegDraw, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rRegHitbox) ? LIGHTGRAY : WHITE);
     }
 
     if (mg->btn_ospite.id > 0) {
-        DrawTexturePro(mg->btn_ospite, (Rectangle) { 0, 0, (float)mg->btn_ospite.width, (float)mg->btn_ospite.height }, rOsp, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rOsp) ? LIGHTGRAY : WHITE);
+        DrawTexturePro(mg->btn_ospite, (Rectangle) { 0, 0, (float)mg->btn_ospite.width, (float)mg->btn_ospite.height }, rOspDraw, (Vector2) { 0, 0 }, 0, CheckCollisionPointRec(mouse, rOspHitbox) ? LIGHTGRAY : WHITE);
     }
 
+    // --- SE VUOI VEDERE I BORDI DELLE HITBOX PER COMODITÀ, SCOMMENTA QUESTE RIGHE: ---
+    // DrawRectangleLinesEx(rAccHitbox, 2, RED);
+    // DrawRectangleLinesEx(rRegHitbox, 2, RED);
+    // DrawRectangleLinesEx(rOspHitbox, 2, RED);
+
+    // --- GESTIONE CLICK ---
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        if (CheckCollisionPointRec(mouse, rAcc)) {
+        if (CheckCollisionPointRec(mouse, rAccHitbox)) {
             PlaySound(suono_bottone);
             return STATO_ACCEDI;
         }
-        if (CheckCollisionPointRec(mouse, rReg)) {
+        if (CheckCollisionPointRec(mouse, rRegHitbox)) {
             PlaySound(suono_bottone);
             return STATO_REGISTRATI;
         }
-        if (CheckCollisionPointRec(mouse, rOsp)) {
+        if (CheckCollisionPointRec(mouse, rOspHitbox)) {
             PlaySound(suono_bottone);
             return STATO_MENU_SCELTA;
         }
