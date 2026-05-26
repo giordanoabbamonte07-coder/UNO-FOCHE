@@ -98,33 +98,60 @@ int AggiornaDisegnaMenuScelta(MenuScelta *menu) {
 
     effettiMenuAttivi = menu->audioAttivo;
 
-    if (CheckCollisionPointRec(mousePos, menu->rect1vs1) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    // =========================================================================
+    // REGOLA QUESTI NUMERI (Misure in Pixel delle Hitbox Cliccabili)
+    // Modificali se vuoi allargare o stringere le aree del click
+    // =========================================================================
+    float tasti_W = 320.0f;       // Larghezza dei tasti centrali (1vs1, Multi, Regole)
+    float tasti_H = 110.0f;        // Altezza dei tasti centrali
+
+    float archivio_W = 200.0f;    // Larghezza tasto Archivio (in alto a sinistra)
+    float archivio_H = 100.0f;     // Altezza tasto Archivio
+
+    float impostazioni_W = 160.0f;// Larghezza tasto Impostazioni (in alto a destra)
+    float impostazioni_H = 90.0f; // Altezza tasto Impostazioni
+    // =========================================================================
+
+    // Generazione delle Hitbox ridotte e centrate al millimetro rispetto ai rettangoli grafici
+    Rectangle h1vs1 = { menu->rect1vs1.x + (menu->rect1vs1.width - tasti_W) / 2.0f, menu->rect1vs1.y + (menu->rect1vs1.height - tasti_H) / 2.0f, tasti_W, tasti_H };
+    Rectangle hMulti = { menu->rectMulti.x + (menu->rectMulti.width - tasti_W) / 2.0f, menu->rectMulti.y + (menu->rectMulti.height - tasti_H) / 2.0f, tasti_W, tasti_H };
+    Rectangle hRegole = { menu->rectRegole.x + (menu->rectRegole.width - tasti_W) / 2.0f, menu->rectRegole.y + (menu->rectRegole.height - tasti_H) / 2.0f, tasti_W, tasti_H };
+
+    Rectangle hArchivio = { menu->rectArchivio.x + (menu->rectArchivio.width - archivio_W) / 2.0f, menu->rectArchivio.y + (menu->rectArchivio.height - archivio_H) / 2.0f, archivio_W, archivio_H };
+    Rectangle hImpostazioni = { menu->rectImpostazioni.x + (menu->rectImpostazioni.width - impostazioni_W) / 2.0f, menu->rectImpostazioni.y + (menu->rectImpostazioni.height - impostazioni_H) / 2.0f, impostazioni_W, impostazioni_H };
+
+    // Per il tasto "Indietro" teniamo la sua area nativa (essendo già scalata piccola al 10%)
+    Rectangle hIndietro = menu->rectIndietro;
+
+    // --- GESTIONE INPUT SULLE NUOVE HITBOX ---
+    if (CheckCollisionPointRec(mousePos, h1vs1) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (effettiMenuAttivi) PlaySound(suono_bottone);
         statoSelezionato = VAI_1VS1;
     }
-    if (CheckCollisionPointRec(mousePos, menu->rectMulti) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (CheckCollisionPointRec(mousePos, hMulti) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (effettiMenuAttivi) PlaySound(suono_bottone);
         statoSelezionato = VAI_MULTIGIOCATORE;
     }
-    if (CheckCollisionPointRec(mousePos, menu->rectRegole) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (CheckCollisionPointRec(mousePos, hRegole) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (effettiMenuAttivi) PlaySound(suono_bottone);
         statoSelezionato = VAI_REGOLE;
     }
-    if (CheckCollisionPointRec(mousePos, menu->rectImpostazioni) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (CheckCollisionPointRec(mousePos, hImpostazioni) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (effettiMenuAttivi) PlaySound(suono_bottone);
         statoSelezionato = VAI_IMPOSTAZIONI;
     }
     if (!menu->nascondi_archivio) {
-        if (CheckCollisionPointRec(mousePos, menu->rectArchivio) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (CheckCollisionPointRec(mousePos, hArchivio) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (effettiMenuAttivi) PlaySound(suono_bottone);
             statoSelezionato = VAI_ARCHIVIO;
         }
     }
-    if (CheckCollisionPointRec(mousePos, menu->rectIndietro) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (CheckCollisionPointRec(mousePos, hIndietro) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (effettiMenuAttivi) PlaySound(suono_bottone);
         statoSelezionato = VAI_INDIETRO;
     }
 
+    // --- DISEGNO SFONDO ---
     if (menu->sfondo.id > 0) {
         DrawTexturePro(menu->sfondo,
             (Rectangle){ 0, 0, (float)menu->sfondo.width, (float)menu->sfondo.height },
@@ -132,11 +159,12 @@ int AggiornaDisegnaMenuScelta(MenuScelta *menu) {
             (Vector2){ 0, 0 }, 0.0f, WHITE);
     }
 
-    Color c1vs1 = CheckCollisionPointRec(mousePos, menu->rect1vs1) ? LIGHTGRAY : WHITE;
-    Color cMulti = CheckCollisionPointRec(mousePos, menu->rectMulti) ? LIGHTGRAY : WHITE;
-    Color cRegole = CheckCollisionPointRec(mousePos, menu->rectRegole) ? LIGHTGRAY : WHITE;
-    Color cImpostazioni = CheckCollisionPointRec(mousePos, menu->rectImpostazioni) ? LIGHTGRAY : WHITE;
-    Color cIndietro = CheckCollisionPointRec(mousePos, menu->rectIndietro) ? LIGHTGRAY : WHITE;
+    // --- DISEGNO PULSANTI (L'illuminazione HOVER segue la hitbox reale) ---
+    Color c1vs1 = CheckCollisionPointRec(mousePos, h1vs1) ? LIGHTGRAY : WHITE;
+    Color cMulti = CheckCollisionPointRec(mousePos, hMulti) ? LIGHTGRAY : WHITE;
+    Color cRegole = CheckCollisionPointRec(mousePos, hRegole) ? LIGHTGRAY : WHITE;
+    Color cImpostazioni = CheckCollisionPointRec(mousePos, hImpostazioni) ? LIGHTGRAY : WHITE;
+    Color cIndietro = CheckCollisionPointRec(mousePos, hIndietro) ? LIGHTGRAY : WHITE;
 
     if (menu->btn1vs1.id > 0) DrawTexturePro(menu->btn1vs1, (Rectangle){0, 0, (float)menu->btn1vs1.width, (float)menu->btn1vs1.height}, menu->rect1vs1, (Vector2){0, 0}, 0.0f, c1vs1);
     if (menu->btnMulti.id > 0) DrawTexturePro(menu->btnMulti, (Rectangle){0, 0, (float)menu->btnMulti.width, (float)menu->btnMulti.height}, menu->rectMulti, (Vector2){0, 0}, 0.0f, cMulti);
@@ -144,13 +172,20 @@ int AggiornaDisegnaMenuScelta(MenuScelta *menu) {
     if (menu->btnImpostazioni.id > 0) DrawTexturePro(menu->btnImpostazioni, (Rectangle){0, 0, (float)menu->btnImpostazioni.width, (float)menu->btnImpostazioni.height}, menu->rectImpostazioni, (Vector2){0, 0}, 0.0f, cImpostazioni);
 
     if (!menu->nascondi_archivio) {
-        Color cArchivio = CheckCollisionPointRec(mousePos, menu->rectArchivio) ? LIGHTGRAY : WHITE;
+        Color cArchivio = CheckCollisionPointRec(mousePos, hArchivio) ? LIGHTGRAY : WHITE;
         if (menu->btnArchivio.id > 0) DrawTexturePro(menu->btnArchivio, (Rectangle){0, 0, (float)menu->btnArchivio.width, (float)menu->btnArchivio.height}, menu->rectArchivio, (Vector2){0, 0}, 0.0f, cArchivio);
     }
 
     if (menu->btnIndietro.id > 0) {
         DrawTexturePro(menu->btnIndietro, (Rectangle){ 0, 0, (float)menu->btnIndietro.width, (float)menu->btnIndietro.height }, menu->rectIndietro, (Vector2){ 0, 0 }, 0.0f, cIndietro);
     }
+
+    // --- SE VUOI VEDERE I BORDI ROSSI DELLE HITBOX PER CALIBRARLE, SCOMMENTA QUESTE RIGHE: ---
+    // DrawRectangleLinesEx(h1vs1, 2, RED);
+    // DrawRectangleLinesEx(hMulti, 2, RED);
+    // DrawRectangleLinesEx(hRegole, 2, RED);
+    // DrawRectangleLinesEx(hArchivio, 2, RED);
+    // DrawRectangleLinesEx(hImpostazioni, 2, RED);
 
     return statoSelezionato;
 }
